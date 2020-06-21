@@ -1,16 +1,20 @@
 <?php
-/*include 'attach.php';*/
-include 'wfstats.php';
-$confirmation_token = 'e3dfa545';
-$token = "697fbf0531e515000313af2c6d64d40ba9bb96f1fe913417bc8dcf2c0ff464d997987e845b4e98fdbefac";
+
+//include 'wfstats.php';
+
+$confirmation_token = 'd7124419';
+$token = "a8667c35957227e39b2a801c36eca359e08cf15325e6f294dacd5205527398c0ae62b0cb0f9305042ab93";
+
+$data = json_decode(file_get_contents('php://input'));
+
 function vk_msg_send($peer_id,$text){
 	$request_params = array(
 		'message' => $text,
 		'peer_id' => $peer_id,
 		'group_id' => "194757158",
 		'random_id' => "0",
-		'access_token' => "697fbf0531e515000313af2c6d64d40ba9bb96f1fe913417bc8dcf2c0ff464d997987e845b4e98fdbefac",
-		'v' => '5.103'
+		'access_token' => "a8667c35957227e39b2a801c36eca359e08cf15325e6f294dacd5205527398c0ae62b0cb0f9305042ab93",
+		'v' => '5.110'
 	);
 	$get_params = http_build_query($request_params);
 	file_get_contents('https://api.vk.com/method/messages.send?'. $get_params);
@@ -25,8 +29,8 @@ function send_query($method, $params){
 function GetUploadServer($peer_id) {
     $request_params = array(
         'peer_id' => $peer_id,
-        'v' => '5.103',
-        'access_token' => '697fbf0531e515000313af2c6d64d40ba9bb96f1fe913417bc8dcf2c0ff464d997987e845b4e98fdbefac'
+        'v' => '5.110',
+        'access_token' => 'a8667c35957227e39b2a801c36eca359e08cf15325e6f294dacd5205527398c0ae62b0cb0f9305042ab93'
     );
     return send_query('photos.getMessagesUploadServer', $request_params);
 }
@@ -46,8 +50,8 @@ function SaveMessagesPhoto($photo, $server, $hash) {
         'photo' => $photo,
         'server' => $server,
         'hash' => $hash,
-        'v' => '5.103',
-        'access_token' => '697fbf0531e515000313af2c6d64d40ba9bb96f1fe913417bc8dcf2c0ff464d997987e845b4e98fdbefac'
+        'v' => '5.110',
+        'access_token' => 'a8667c35957227e39b2a801c36eca359e08cf15325e6f294dacd5205527398c0ae62b0cb0f9305042ab93'
     );
     return send_query('photos.saveMessagesPhoto', $request_params);
 }
@@ -67,13 +71,14 @@ function sendAttachment($peer_id, $text, $path) {
         'peer_id' => $peer_id,
         'group_id' => '194757158',
         'attachment' => 'photo'.$photo->response[0]->owner_id.'_'.$photo->response[0]->id,
-        'access_token' => '697fbf0531e515000313af2c6d64d40ba9bb96f1fe913417bc8dcf2c0ff464d997987e845b4e98fdbefac', 
-        'v' => '5.103'
+        'access_token' => 'a8667c35957227e39b2a801c36eca359e08cf15325e6f294dacd5205527398c0ae62b0cb0f9305042ab93',
+        'v' => '5.110'
     );
     send_query("messages.send", $request_params);
 }
 
-$data = json_decode(file_get_contents('php://input'));
+
+
 switch ($data->type) {
 
 	case 'confirmation':
@@ -85,15 +90,14 @@ switch ($data->type) {
 		$chat_id = $data->object->message->peer_id;
 
 		$bstr = explode(" ", $message_text);
-		$str = mb_strtolower($bstr[0], 'UTF-8');
-		/*function clearReply() {
-*/
-			$strarr = explode(" ", $message_text);
-			$arrslc = array_slice($strarr, 1);
-			$arrslcimp = implode(" ", $arrslc);
-			$arrslcimp;
 
-		/*}*/
+		include "weather.php";
+
+		$str = mb_strtolower($message_text, 'UTF-8'); //$bstr[0]
+
+		$strarr = explode(" ", $message_text);
+		$arrslc = array_slice($strarr, 1);
+		$arrslcimp = implode(" ", $arrslc);
 
 		include 'commands.php';
 

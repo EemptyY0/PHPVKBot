@@ -18,11 +18,6 @@ $arb = $data->enemy;
 
 $urlbaro = "https://api.warframestat.us/pc/voidTrader";
 
-/*$options = array(
-	"platform" => "pc",
-	"lang" => "en",
-);*/
-
 $chbaro = curl_init();
 curl_setopt($chbaro, CURLOPT_RETURNTRANSFER, 1);
 curl_setopt($chbaro, CURLOPT_URL, $urlbaro.'?'.http_build_query($options));
